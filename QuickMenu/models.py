@@ -2,12 +2,13 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
+from decimal import Decimal
 
 class Ingredient(models.Model):
     name = models.CharField(max_length=50,blank=False, null=False, default=' ')
     description = models.CharField(max_length=50, blank=True, null=True,default=' ')
-    purchaseAmount = models.DecimalField(max_digits=10, decimal_places=3, null=False, default=' ')
-    lastPurchasePrice = models.DecimalField(max_digits=10, decimal_places=2, null=False, default=' ')
+    purchaseAmount = models.DecimalField(max_digits=10, decimal_places=3, null=True, default=Decimal(0))
+    lastPurchasePrice = models.DecimalField(max_digits=10, decimal_places=2, null=True, default=Decimal(0))
     lastPurchaseDate = models.DateTimeField(auto_now_add=True)
     measurementType = models.CharField(max_length=10, default='g')
     lastUpdate = models.DateTimeField(auto_now_add=True)
@@ -43,7 +44,7 @@ class Recipe(models.Model):
 
 class MenuOffering(models.Model):
     name = models.CharField(max_length=50,blank=False, null=False, default=' ')
-    offerPrice = models.DecimalField(max_digits=5, decimal_places=2, null=False, default=' ')
+    offerPrice = models.DecimalField(max_digits=5, decimal_places=2, null=True, default=Decimal(0))
     offeringStart = models.DateTimeField(auto_now_add=True)
     offeringEnd = models.DateTimeField(auto_now_add=True)
     quantiySold = models.IntegerField(default='0')
@@ -66,7 +67,7 @@ class MenuOffering(models.Model):
 
 class RecipeIngredient(models.Model):
 
-    amount = models.DecimalField(max_digits=5, decimal_places=3, null=False, default=' ')
+    amount = models.DecimalField(max_digits=5, decimal_places=3, null=True, default=Decimal(0))
     description = models.CharField(max_length=50, blank=True, null=True,default=' ')
     recipe = models.ForeignKey(
         Recipe,
